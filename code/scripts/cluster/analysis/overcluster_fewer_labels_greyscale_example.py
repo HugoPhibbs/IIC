@@ -8,10 +8,10 @@ from sys import stdout as sysout
 import torch
 import torchvision
 
-import code.archs as archs
-from code.utils.cluster.cluster_eval import cluster_subheads_eval
-from code.utils.cluster.data import _create_mapping_loader
-from code.utils.cluster.transforms import greyscale_make_transforms
+import Clustering_IIC.code.archs as archs
+from Clustering_IIC.code.utils.cluster.cluster_eval import cluster_subheads_eval
+from Clustering_IIC.code.utils.cluster.data import _create_mapping_loader
+from Clustering_IIC.code.utils.cluster.transforms import greyscale_make_transforms
 
 # Reassess IID+ models by doing the mapping_assign with smaller numbers of
 # labelled images

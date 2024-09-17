@@ -11,11 +11,11 @@ import torch
 matplotlib.use('Agg')
 import os
 
-import code.archs as archs
-from code.utils.cluster.general import nice
-from code.utils.segmentation.segmentation_eval import \
+import Clustering_IIC.code.archs as archs
+from Clustering_IIC.code.utils.cluster.general import nice
+from Clustering_IIC.code.utils.segmentation.segmentation_eval import \
   segmentation_eval
-from code.utils.segmentation.data import segmentation_create_dataloaders
+from Clustering_IIC.code.utils.segmentation.data import segmentation_create_dataloaders
 
 # Clone any old model (from config and best_net) and re-evaluate, including
 # finding 1-1 mapping from output channels to ground truth clusters.

@@ -7,10 +7,10 @@ from sys import stdout as sysout
 
 import torch
 
-import code.archs as archs
-from code.utils.cluster.cluster_eval import cluster_subheads_eval
-from code.utils.cluster.data import make_STL_data, make_CIFAR_data
-from code.utils.cluster.transforms import \
+import Clustering_IIC.code.archs as archs
+from Clustering_IIC.code.utils.cluster.cluster_eval import cluster_subheads_eval
+from Clustering_IIC.code.utils.cluster.data import make_STL_data, make_CIFAR_data
+from Clustering_IIC.code.utils.cluster.transforms import \
   sobel_make_transforms
 
 # Reassess IID+ models by doing the mapping_assign with smaller numbers of

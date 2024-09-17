@@ -14,15 +14,15 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import os
 
-import code.archs as archs
-from code.utils.cluster.general import config_to_str, get_opt, update_lr, nice
-from code.utils.cluster.transforms import sobel_process
-from code.utils.segmentation.segmentation_eval import \
+import Clustering_IIC.code.archs as archs
+from Clustering_IIC.code.utils.cluster.general import config_to_str, get_opt, update_lr, nice
+from Clustering_IIC.code.utils.cluster.transforms import sobel_process
+from Clustering_IIC.code.utils.segmentation.segmentation_eval import \
   segmentation_eval
-from code.utils.segmentation.IID_losses import IID_segmentation_loss, \
+from Clustering_IIC.code.utils.segmentation.IID_losses import IID_segmentation_loss, \
   IID_segmentation_loss_uncollapsed
-from code.utils.segmentation.data import segmentation_create_dataloaders
-from code.utils.segmentation.general import set_segmentation_input_channels
+from Clustering_IIC.code.utils.segmentation.data import segmentation_create_dataloaders
+from Clustering_IIC.code.utils.segmentation.general import set_segmentation_input_channels
 
 """
   Fully unsupervised clustering for segmentation ("IIC" = "IID").
@@ -232,7 +232,7 @@ def train():
   # Train
   # ------------------------------------------------------------------------
 
-  for e_i in xrange(next_epoch, config.num_epochs):
+  for e_i in range(next_epoch, config.num_epochs):
     print("Starting e_i: %d %s" % (e_i, datetime.now()))
     sys.stdout.flush()
 
@@ -279,7 +279,7 @@ def train():
                                     config.input_sz).to(torch.float32).cuda()
 
         curr_batch_sz = tup[0][0].shape[0]
-        for d_i in xrange(config.num_dataloaders):
+        for d_i in range(config.num_dataloaders):
           img1, img2, affine2_to_1, mask_img1 = tup[d_i]
           assert (img1.shape[0] == curr_batch_sz)
 
@@ -314,7 +314,7 @@ def train():
         avg_loss_batch = None  # avg over the heads
         avg_loss_no_lamb_batch = None
 
-        for i in xrange(config.num_sub_heads):
+        for i in range(config.num_sub_heads):
           loss, loss_no_lamb = loss_fn(x1_outs[i],
                                        x2_outs[i],
                                        all_affine2_to_1=all_affine2_to_1,

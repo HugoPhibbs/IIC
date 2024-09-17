@@ -11,9 +11,9 @@ import torch
 import vlfeat  # calls constructor
 from sklearn.cluster import MiniBatchKMeans
 
-from code.utils.cluster.eval_metrics import _hungarian_match, _original_match, \
+from Clustering_IIC.code.utils.cluster.eval_metrics import _hungarian_match, _original_match, \
   _acc
-from code.utils.segmentation.data import make_Coco_dataloaders, \
+from Clustering_IIC.code.utils.segmentation.data import make_Coco_dataloaders, \
   make_Potsdam_dataloaders
 
 SIFT_DLEN = 128
@@ -73,7 +73,7 @@ def _get_vectorised_sift_samples(archetype_config, dataloader):
       assert (batch_sz == curr_batch_sz)
 
     start = b_i * batch_sz
-    for i in xrange(curr_batch_sz):
+    for i in range(curr_batch_sz):
       grey_img = cv2.cvtColor(imgs[i, :, :, :], cv2.COLOR_RGB2GRAY)
       locs, descs = vlfeat.vl_dsift(grey_img, step=SIFT_STEP)
       descs = descs.transpose((1, 0))  # 40*40, 128

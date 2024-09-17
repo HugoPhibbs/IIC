@@ -15,12 +15,26 @@ import torchvision
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-import code.archs as archs
-from code.utils.cluster.general import config_to_str, get_opt, update_lr, nice
-from code.utils.cluster.data import cluster_twohead_create_dataloaders
-from code.utils.cluster.cluster_eval import cluster_eval, get_subhead_using_loss
-from code.utils.cluster.IID_losses import IID_loss
-from code.utils.cluster.render import save_progress
+import Clustering_IIC.code.archs as archs
+from Clustering_IIC.code.utils.cluster.general import config_to_str, get_opt, update_lr, nice
+from Clustering_IIC.code.utils.cluster.data import cluster_twohead_create_dataloaders
+from Clustering_IIC.code.utils.cluster.cluster_eval import cluster_eval, get_subhead_using_loss
+from Clustering_IIC.code.utils.cluster.IID_losses import IID_loss
+from Clustering_IIC.code.utils.cluster.render import save_progress
+
+# For loading .env vars
+from dotenv import load_dotenv
+load_dotenv()
+
+print("CUDA available:", torch.cuda.is_available())
+print("CUDA version:", torch.version.cuda)
+print("PyTorch version:", torch.__version__)
+print("CUDA_HOME:", os.environ.get("CUDA_HOME"))
+print("PATH:", os.environ.get("PATH"))
+print("LD_LIBRARY_PATH:", os.environ.get("LD_LIBRARY_PATH"))
+
+# Making sure CUDA is available - training fails otherwise
+assert torch.cuda.is_available() == True
 
 """
   Fully unsupervised clustering ("IIC" = "IID").
@@ -37,8 +51,7 @@ parser.add_argument("--opt", type=str, default="Adam")
 parser.add_argument("--mode", type=str, default="IID")
 
 parser.add_argument("--dataset", type=str, default="MNIST")
-parser.add_argument("--dataset_root", type=str,
-                    default="/scratch/local/ssd/xuji/MNIST")
+parser.add_argument("--dataset_root", type=str, default=os.getenv("DATASET_ROOT"))
 
 parser.add_argument("--gt_k", type=int, default=10)
 parser.add_argument("--output_k_A", type=int, required=True)
@@ -56,8 +69,7 @@ parser.add_argument("--batch_sz", type=int, default=240)  # num pairs
 parser.add_argument("--num_dataloaders", type=int, default=3)
 parser.add_argument("--num_sub_heads", type=int, default=5)
 
-parser.add_argument("--out_root", type=str,
-                    default="/scratch/shared/slow/xuji/iid_private")
+parser.add_argument("--out_root", type=str, default = os.getenv("RESULTS_ROOT"))
 parser.add_argument("--restart", dest="restart", default=False,
                     action="store_true")
 parser.add_argument("--restart_from_best", dest="restart_from_best",
@@ -112,6 +124,8 @@ parser.add_argument("--no_jitter", dest="no_jitter", default=False,
 parser.add_argument("--no_flip", dest="no_flip", default=False,
                     action="store_true")
 
+parser.add_argument("--download_data", dest="download_data", default=False, action="store_true")
+
 config = parser.parse_args()
 
 # Setup ------------------------------------------------------------------------
@@ -120,14 +134,14 @@ config.twohead = True
 config.in_channels = 1
 config.out_dir = os.path.join(config.out_root, str(config.model_ind))
 assert (config.batch_sz % config.num_dataloaders == 0)
-config.dataloader_batch_sz = config.batch_sz / config.num_dataloaders
+config.dataloader_batch_sz = int(config.batch_sz / config.num_dataloaders)
 
 assert (config.mode == "IID")
 assert ("TwoHead" in config.arch)
 assert (config.output_k_B == config.gt_k)
 config.output_k = config.output_k_B  # for eval code
 assert (config.output_k_A >= config.gt_k)
-config.eval_mode = "hung"
+config.eval_mode = "orig"
 
 assert ("MNIST" == config.dataset)
 dataset_class = torchvision.datasets.MNIST
@@ -279,7 +293,7 @@ def train(render_count=-1):
   # Train
   # ------------------------------------------------------------------------
 
-  for e_i in xrange(next_epoch, config.num_epochs):
+  for e_i in range(next_epoch, config.num_epochs):
     print("Starting e_i: %d" % e_i)
 
     if e_i in config.lr_schedule:
@@ -308,7 +322,7 @@ def train(render_count=-1):
         iterators = (d for d in dataloaders)
 
         b_i = 0
-        for tup in itertools.izip(*iterators):
+        for tup in zip(*iterators):
           net.module.zero_grad()
 
           all_imgs = torch.zeros((config.batch_sz, config.in_channels,
@@ -320,7 +334,7 @@ def train(render_count=-1):
 
           imgs_curr = tup[0][0]  # always the first
           curr_batch_sz = imgs_curr.size(0)
-          for d_i in xrange(config.num_dataloaders):
+          for d_i in range(config.num_dataloaders):
             imgs_tf_curr = tup[1 + d_i][0]  # from 2nd to last
             assert (curr_batch_sz == imgs_tf_curr.size(0))
 
@@ -344,7 +358,7 @@ def train(render_count=-1):
 
           avg_loss_batch = None  # avg over the heads
           avg_loss_no_lamb_batch = None
-          for i in xrange(config.num_sub_heads):
+          for i in range(config.num_sub_heads):
             loss, loss_no_lamb = IID_loss(x_outs[i], x_tf_outs[i],
                                           lamb=lamb)
             if avg_loss_batch is None:

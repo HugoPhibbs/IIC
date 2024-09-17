@@ -6,10 +6,10 @@ import torch
 import torchvision
 from torch.utils.data import ConcatDataset, Sampler
 
-from code.datasets.clustering.truncated_dataset import TruncatedDataset
-from code.utils.cluster.transforms import sobel_make_transforms, \
+from Clustering_IIC.code.datasets.clustering.truncated_dataset import TruncatedDataset
+from Clustering_IIC.code.utils.cluster.transforms import sobel_make_transforms, \
   greyscale_make_transforms
-from code.utils.semisup.dataset import TenCropAndFinish
+from Clustering_IIC.code.utils.semisup.dataset import TenCropAndFinish
 from .general import reorder_train_deterministic
 
 
@@ -273,7 +273,8 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
         root=config.dataset_root,
         transform=tf1,
         train=train_partition,
-        target_transform=target_transform)
+        target_transform=target_transform,
+        download=config.download_data)
 
     if hasattr(config, "mix_train"):
       if config.mix_train and (train_partition == "train+unlabeled"):
@@ -292,7 +293,7 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
                        torch.utils.data.sampler.SequentialSampler))
   dataloaders = [train_dataloader]
 
-  for d_i in xrange(config.num_dataloaders):
+  for d_i in range(config.num_dataloaders):
     print("Creating auxiliary dataloader ind %d out of %d time %s" %
           (d_i, config.num_dataloaders, datetime.now()))
     sys.stdout.flush()

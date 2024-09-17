@@ -5,7 +5,7 @@ import pickle
 import torch
 from torch import nn as nn
 
-import code.archs as archs
+import Clustering_IIC.code.archs as archs
 
 # Print the modules of each network including if batchnorm is used or not
 

@@ -13,14 +13,14 @@ import torch
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-import code.archs as archs
-from code.utils.cluster.general import config_to_str, get_opt, update_lr
-from code.utils.cluster.transforms import sobel_process
-from code.utils.segmentation.data import make_Coco_dataloaders, \
+import Clustering_IIC.code.archs as archs
+from Clustering_IIC.code.utils.cluster.general import config_to_str, get_opt, update_lr
+from Clustering_IIC.code.utils.cluster.transforms import sobel_process
+from Clustering_IIC.code.utils.segmentation.data import make_Coco_dataloaders, \
   make_Potsdam_dataloaders
-from code.utils.segmentation.baselines.kmeans_segmentation_eval import \
+from Clustering_IIC.code.utils.segmentation.baselines.kmeans_segmentation_eval import \
   kmeans_segmentation_eval
-from code.utils.segmentation.baselines.isola_utils import isola_loss, \
+from Clustering_IIC.code.utils.segmentation.baselines.isola_utils import isola_loss, \
   isola_set_patches
 
 parser = argparse.ArgumentParser()
@@ -252,7 +252,7 @@ else:
 
 fig, axarr = plt.subplots(3, sharex=False, figsize=(20, 20))
 
-for e_i in xrange(next_epoch, config.num_epochs):
+for e_i in range(next_epoch, config.num_epochs):
   torch.cuda.empty_cache()
 
   net.module.train()
@@ -329,7 +329,7 @@ for e_i in xrange(next_epoch, config.num_epochs):
   axarr[1].set_title("ACC")
 
   axarr[2].clear()
-  for c in xrange(config.gt_k):
+  for c in range(config.gt_k):
     axarr[2].plot(config.epoch_masses[:, c])
   axarr[2].set_title("Masses (reordered)")
 

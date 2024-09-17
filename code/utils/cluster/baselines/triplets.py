@@ -4,12 +4,12 @@ import torch.nn.functional as F
 import torchvision
 from sklearn.cluster import KMeans
 
-from code.utils.cluster.data import _cifar100_to_cifar20, \
+from Clustering_IIC.code.utils.cluster.data import _cifar100_to_cifar20, \
   _create_dataloaders, _create_mapping_loader
-from code.utils.cluster.eval_metrics import _hungarian_match, _acc
-from code.utils.cluster.transforms import sobel_make_transforms, \
+from Clustering_IIC.code.utils.cluster.eval_metrics import _hungarian_match, _acc
+from Clustering_IIC.code.utils.cluster.transforms import sobel_make_transforms, \
   greyscale_make_transforms
-from code.utils.cluster.transforms import sobel_process
+from Clustering_IIC.code.utils.cluster.transforms import sobel_process
 
 
 def make_triplets_data(config):
@@ -205,7 +205,7 @@ def triplets_eval(config, net, dataloader_test, sobel):
 
   mass = np.zeros((1, config.gt_k))
   per_class_acc = np.zeros((1, config.gt_k))
-  for c in xrange(config.gt_k):
+  for c in range(config.gt_k):
     flags = (reordered_preds == c)
     actual = (flat_targets_all == c)
     mass[0, c] = flags.sum().item()

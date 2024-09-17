@@ -7,9 +7,9 @@ import numpy as np
 import torch
 from PIL import Image
 
-import code.archs as archs
-from code.utils.cluster.data import cluster_twohead_create_dataloaders
-from code.utils.cluster.transforms import sobel_process
+import Clustering_IIC.code.archs as archs
+from Clustering_IIC.code.utils.cluster.data import cluster_twohead_create_dataloaders
+from Clustering_IIC.code.utils.cluster.transforms import sobel_process
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model_ind", type=int, required=True)

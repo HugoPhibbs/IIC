@@ -4,9 +4,9 @@ from datetime import datetime
 import torch
 from torch.utils.data import ConcatDataset
 
-from code.datasets.segmentation import DoerschDataset
-from code.datasets.segmentation import cocostuff
-from code.datasets.segmentation import potsdam
+from Clustering_IIC.code.datasets.segmentation import DoerschDataset
+from Clustering_IIC.code.datasets.segmentation import cocostuff
+from Clustering_IIC.code.datasets.segmentation import potsdam
 
 
 def segmentation_create_dataloaders(config):
@@ -88,7 +88,7 @@ def _create_dataloaders(config, dataset_class):
   # need the matrix relation between them
   dataloaders = []
   do_shuffle = (config.num_dataloaders == 1)
-  for d_i in xrange(config.num_dataloaders):
+  for d_i in range(config.num_dataloaders):
     print("Creating paired dataloader %d out of %d time %s" %
           (d_i, config.num_dataloaders, datetime.now()))
     sys.stdout.flush()

@@ -14,13 +14,13 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import torch.nn as nn
 
-import code.archs as archs
-from code.archs.semisup.sup_head5 import SupHead5
-from code.utils.cluster.general import update_lr
-from code.utils.cluster.transforms import sobel_process, \
+import Clustering_IIC.code.archs as archs
+from Clustering_IIC.code.archs.semisup.sup_head5 import SupHead5
+from Clustering_IIC.code.utils.cluster.general import update_lr
+from Clustering_IIC.code.utils.cluster.transforms import sobel_process, \
   sobel_make_transforms
-from code.utils.semisup.general import get_dlen, assess_acc_block
-from code.utils.semisup.dataset import TenCropAndFinish
+from Clustering_IIC.code.utils.semisup.general import get_dlen, assess_acc_block
+from Clustering_IIC.code.utils.semisup.dataset import TenCropAndFinish
 
 
 # Finetune a network that has been trained in an unsupervised fashion but with a
@@ -224,7 +224,7 @@ def main():
 
   # Train ----------------------------------------------------------------------
 
-  for e_i in xrange(start_epoch, config.num_epochs):
+  for e_i in range(start_epoch, config.num_epochs):
     net.train()
 
     if e_i in config.lr_schedule:

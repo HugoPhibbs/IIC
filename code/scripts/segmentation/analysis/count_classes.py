@@ -4,7 +4,7 @@ import pickle
 
 import numpy as np
 
-from code.utils.segmentation.data import make_Coco_dataloaders, \
+from Clustering_IIC.code.utils.segmentation.data import make_Coco_dataloaders, \
   make_Potsdam_dataloaders
 
 parser = argparse.ArgumentParser()
@@ -50,7 +50,7 @@ for model_ind in given_config.model_inds:
   # count classes in mapping_assign dataloader
   for b_i, batch in enumerate(mapping_assignment_dataloader):
     imgs, flat_targets, mask = batch
-    for c in xrange(config.gt_k):
+    for c in range(config.gt_k):
       counts[c] += ((flat_targets == c) * mask).sum().item()
 
   print("counts")

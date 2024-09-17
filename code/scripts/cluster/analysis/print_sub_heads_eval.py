@@ -3,9 +3,9 @@ import os
 import pickle
 import torch
 
-import code.archs as archs
-from code.utils.cluster.cluster_eval import get_subhead_using_loss
-from code.utils.cluster.data import cluster_twohead_create_dataloaders
+import Clustering_IIC.code.archs as archs
+from Clustering_IIC.code.utils.cluster.cluster_eval import get_subhead_using_loss
+from Clustering_IIC.code.utils.cluster.data import cluster_twohead_create_dataloaders
 
 def main():
   parser = argparse.ArgumentParser()
