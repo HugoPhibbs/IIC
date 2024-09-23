@@ -517,10 +517,11 @@ def create_basic_clustering_dataloaders(config):
     """
 
     # Change these according to your data:
-    greyscale = False
+    # greyscale = False
+    greyscale = True
     train_data_path = os.path.join(config.dataset_root, "train")
-    test_val_data_path = os.path.join(config.dataset_root, "none")
-    test_data_path = os.path.join(config.dataset_root, "none")
+    test_val_data_path = os.path.join(config.dataset_root, "train")
+    test_data_path = os.path.join(config.dataset_root, "train")
     assert (config.batchnorm_track)  # recommended (for test time invariance to batch size)
 
     # Transforms:
@@ -541,7 +542,7 @@ def create_basic_clustering_dataloaders(config):
     datasets_tf_head_B = [RiverbankFailureFolder(root=train_data_path, transform=tf2) for _ in
                           range(config.num_dataloaders)]
 
-    dataloaders_head_B = [torch.utils.data.DataLorader(
+    dataloaders_head_B = [torch.utils.data.DataLoader(
         dataset_head_B,
         batch_size=config.dataloader_batch_sz,
         shuffle=False,
@@ -582,7 +583,7 @@ def create_basic_clustering_dataloaders(config):
     # Testing data (labelled):
     mapping_assignment_dataloader, mapping_test_dataloader = None, None
     if os.path.exists(test_data_path):
-        mapping_assignment_dataset = torchvision.datasets.ImageFolder(test_val_data_path, transform=tf3)
+        mapping_assignment_dataset = RiverbankFailureFolder(test_val_data_path, transform=tf3)
         mapping_assignment_dataloader = torch.utils.data.DataLoader(
             mapping_assignment_dataset,
             batch_size=config.batch_sz,
@@ -591,7 +592,7 @@ def create_basic_clustering_dataloaders(config):
             num_workers=0,
             drop_last=False)
 
-        mapping_test_dataset = torchvision.datasets.ImageFolder(test_data_path, transform=tf3)
+        mapping_test_dataset = RiverbankFailureFolder(test_data_path, transform=tf3)
         mapping_test_dataloader = torch.utils.data.DataLoader(
             mapping_test_dataset,
             batch_size=config.batch_sz,

@@ -36,6 +36,9 @@ def _clustering_get_data(config, net, dataloader, sobel=False,
   num_test = 0
   for b_i, batch in enumerate(dataloader):
     imgs = batch[0].cuda()
+    # imgs = batch.cuda()
+
+    # imgs =
 
     if sobel:
       imgs = sobel_process(imgs, config.include_rgb, using_IR=using_IR)
