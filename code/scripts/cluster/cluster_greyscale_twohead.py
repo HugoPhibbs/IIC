@@ -1,3 +1,4 @@
+
 from __future__ import print_function
 
 import argparse
@@ -14,6 +15,11 @@ import torchvision
 
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..")))
+
 
 import Clustering_IIC.code.archs as archs
 from Clustering_IIC.code.utils.cluster.general import config_to_str, get_opt, update_lr, nice
@@ -300,6 +306,7 @@ def train(render_count=-1):
 
     for e_i in range(next_epoch, config.num_epochs):
         print("Starting e_i: %d" % e_i)
+        print(f"num of batches: {len(dataloaders_head_A)}, {len(dataloaders_head_B)}")
 
         if e_i in config.lr_schedule:
             optimiser = update_lr(optimiser, lr_mult=config.lr_mult)
